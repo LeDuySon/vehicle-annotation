@@ -151,11 +151,16 @@ color_not_visited = (0, 0, 255)
 #   save_path = train_path if index == 0 else test_path
 file = glob.glob(args["txt_path"] + "/*.txt")
 
-for video_idx, vid in enumerate(file):
+error_video = []
+for video_idx in range(len(file)):
+  vid = file[video_idx]
   if vid in error_list:
     print("Error video")
     continue
   # vid = '/home/son/trackingVehicle/DO_NOT_TOUCH/Video_nga_tu_QL48D_giao_QL1/annotations/labels/may10_01_04.txt'
+  error_trigger = False
+
+
   id_counter = defaultdict(list)
   video_path_cv = convert2video_path(vid, args["video_path"])
   print("Process: ", vid)
@@ -209,7 +214,7 @@ for video_idx, vid in enumerate(file):
   id2nclass = {}
   visited_id = []
   coord_queue = Queue(maxsize=2)
-
+  print("Visited_id: ", visited_id)
   class_area_width = 200
   while success:
       rec_coord = []
@@ -280,7 +285,10 @@ for video_idx, vid in enumerate(file):
           if key == ord("w"):
             # image = clone.copy()
             pass
-
+          elif key == ord("x"):
+            error_video.append(vid)
+            error_trigger = True
+            break
           elif key == ord("q"):
             break
           veh_idx += 1
@@ -291,11 +299,10 @@ for video_idx, vid in enumerate(file):
       
       current_frame += 1
   print(id2nclass)
-  save_id_nclass(id2nclass, vid.split("/")[-1], args["output_path"])
+  if(not error_trigger):
+    save_id_nclass(id2nclass, vid.split("/")[-1], args["output_path"])
   
-
-    
-  
+print("Error_video: ", error_video)
   
 # # pd.DataFrame.from_dict(infor_dict).to_csv("data.csv", index=False)
           
