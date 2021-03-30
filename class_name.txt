@@ -1,0 +1,10 @@
+xe con
+xe khach nho
+xe khach trung
+xe khach lon
+xe bus
+xe tai nhe
+xe tai trung (2-10 tan)
+xe tai nang
+xe container
+xe may
